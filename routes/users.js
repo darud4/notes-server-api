@@ -3,11 +3,11 @@ const router = require('express').Router();
 // const { updateProfileValidation } = require('../utils/joiValidators');
 
 const {
-  getOurUser, updateProfile,
+  getOurUser, updateProfile, deleteProfile,
 } = require('../controllers/users');
 
 router.get('/me', getOurUser);
 router.patch('/me', updateProfile);
-// TODO DELETE
+router.delete('/me', deleteProfile);
 
 module.exports = router;

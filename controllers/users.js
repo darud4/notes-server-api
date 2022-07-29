@@ -4,7 +4,13 @@ const { makeToken } = require('../middlewares/auth');
 const NotFound = require('../errors/NotFound');
 const DuplicateUser = require('../errors/DuplicateUser');
 const BadRequest = require('../errors/BadRequest');
-const { ERRMSG_BAD_REQUEST, ERRMSG_EMAIL_ALREADY_EXISTS, ERRMSG_USER_ID_NOT_FOUND } = require('../utils/errorTexts');
+const {
+  ERRMSG_USER_CANNOT_BE_UPDATED,
+  ERRMSG_BAD_REQUEST,
+  ERRMSG_EMAIL_ALREADY_EXISTS,
+  ERRMSG_USER_ID_NOT_FOUND,
+  ERRMSG_USER_CANNOT_BE_DELETED,
+} = require('../utils/errorTexts');
 
 function handleUserError(error, next) {
   if (['ValidationError', 'CastError'].includes(error.name)) next(new BadRequest(ERRMSG_BAD_REQUEST));
@@ -55,13 +61,25 @@ module.exports.getOurUser = (req, res, next) => {
 module.exports.updateProfile = (req, res, next) => {
   const { id } = req.user;
   const { name, password } = req.body;
-  User.update(
-    { name, password },
-    { where: { id } },
-  )
+  bcrypt.hash(password, 10)
+    .then((hash) => User.update(
+      { name, password: hash },
+      { where: { id } },
+    ))
     .then((rowsUpdated) => (
       rowsUpdated
         ? res.status(200).send({ name })
-        : Promise.reject(rowsUpdated)))
+        : Promise.reject(ERRMSG_USER_CANNOT_BE_UPDATED)))
     .catch((error) => handleUserError(error, next));
+};
+
+module.exports.deleteProfile = (req, res, next) => {
+  const { id } = req.user;
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => (
+      (user.id === id)
+        ? User.destroy({ where: { id } })
+        : Promise.reject(ERRMSG_USER_CANNOT_BE_DELETED)))
+    .catch(next);
 };
