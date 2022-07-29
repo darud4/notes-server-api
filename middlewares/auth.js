@@ -13,7 +13,7 @@ module.exports.makeToken = (payload) => jwt.sign(payload, SECRET, { expiresIn: '
 module.exports.checkToken = function checkToken(req, res, next) {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return next(new AuthError(ERRMSG_AUTH_ERROR));
+    throw new AuthError(ERRMSG_AUTH_ERROR);
   }
   const token = authorization.replace('Bearer ', '');
 

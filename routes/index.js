@@ -10,8 +10,8 @@ const { ERRMSG_PAGE_NOT_FOUND } = require('../utils/errorTexts');
 
 router.post('/signin', celebrate(loginValidation), login);
 router.post('/signup', celebrate(registerValidation), createUser);
-router.use(checkToken);
-router.use('/users', usersRouter);
+// router.use(checkToken);
+router.use('/users', checkToken, usersRouter);
 
 router.use((req, res, next) => next(new NotFound(ERRMSG_PAGE_NOT_FOUND)));
 
