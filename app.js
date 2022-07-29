@@ -10,7 +10,6 @@ const { limiter } = require('./utils/rateLimiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorHandler } = require('./utils/errorHandler');
 const { CONFIG } = require('./config');
-// const router = require('./routes/index');
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -30,5 +29,4 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
-console.log(`Listening on port ${CONFIG.port}`);
 app.listen(CONFIG.port);

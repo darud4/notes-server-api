@@ -15,15 +15,16 @@ module.exports.loginValidation = {
   }),
 };
 
-module.exports.idValidation = {
-  params: Joi.object().keys({
-    id: Joi.number().required().min(1).max(10),
-  }),
-};
-
 module.exports.updateProfileValidation = {
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
+    password: Joi.string().required(),
+  }),
+};
+
+module.exports.deleteProfileValidation = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 };
