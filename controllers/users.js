@@ -81,5 +81,9 @@ module.exports.deleteProfile = (req, res, next) => {
       (user.id === id)
         ? User.destroy({ where: { id } })
         : Promise.reject(ERRMSG_USER_CANNOT_BE_DELETED)))
+    .then((rowsDeleted) => (
+      rowsDeleted
+        ? res.status(200).send({ email })
+        : Promise.reject(ERRMSG_USER_CANNOT_BE_DELETED)))
     .catch(next);
 };
