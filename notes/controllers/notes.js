@@ -9,6 +9,7 @@ const {
   ERRMSG_UPDATE_NOTE_NOT_YOURS,
   ERRMSG_DELETE_NOTE_NOT_YOURS,
   ERRMSG_NOTE_CANNOT_BE_UPDATED,
+  ERRMSG_NOTE_CANNOT_BE_DELETED,
 } = require('../utils/errorTexts');
 
 function handleNoteError(error, next) {
@@ -66,17 +67,21 @@ module.exports.updateNote = (req, res, next) => {
     .catch((error) => handleNoteError(error, next));
 };
 
-module.exports.deleteProfile = (req, res, next) => {
-  const { id } = req.user;
-  const { email, password } = req.body;
-  return User.findUserByCredentials(email, password)
-    .then((user) => (
-      (user.id === id)
-        ? User.destroy({ where: { id } })
-        : Promise.reject(ERRMSG_USER_CANNOT_BE_DELETED)))
+module.exports.deleteNote = (req, res, next) => {
+  const { id } = req.params;
+  const { uid } = req.body;
+  return Note.findByPk(id)
+    .then((note) => {
+      if (note.uid === +uid) {
+        return Note.destroy(
+          { where: { id } },
+        );
+      }
+      throw new NotAuthorized(ERRMSG_DELETE_NOTE_NOT_YOURS);
+    })
     .then((rowsDeleted) => (
       rowsDeleted
-        ? res.status(200).send({ email })
-        : Promise.reject(ERRMSG_USER_CANNOT_BE_DELETED)))
+        ? res.status(200).send({ id })
+        : Promise.reject(ERRMSG_NOTE_CANNOT_BE_DELETED)))
     .catch((error) => handleNoteError(error, next));
 };
