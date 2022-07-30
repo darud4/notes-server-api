@@ -8,6 +8,7 @@ const {
   ERRMSG_SELECT_NOTE_NOT_YOURS,
   ERRMSG_UPDATE_NOTE_NOT_YOURS,
   ERRMSG_DELETE_NOTE_NOT_YOURS,
+  ERRMSG_NOTE_CANNOT_BE_UPDATED,
 } = require('../utils/errorTexts');
 
 function handleNoteError(error, next) {
@@ -46,11 +47,12 @@ module.exports.getOneNote = (req, res, next) => {
 };
 
 module.exports.updateNote = (req, res, next) => {
-  const { title, text, isPinned, id, uid } = req.body;
+  const { title, text, isPinned, uid } = req.body;
+  const { id } = req.params;
   return Note.findByPk(id)
     .then((note) => {
       if (note.uid === +uid) {
-        return User.update(
+        return Note.update(
           { title, text, isPinned },
           { where: { id } },
         );

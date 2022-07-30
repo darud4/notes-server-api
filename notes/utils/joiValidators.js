@@ -13,7 +13,12 @@ module.exports.updateNoteValidation = {
   body: Joi.object().keys({
     title: Joi.string().required().max(40),
     text: Joi.string().required(),
+    uid: Joi.number().required(),
+    isPinned: Joi.boolean(),
   }),
+  params: Joi.object().keys({
+    id: Joi.number().required(),
+  })
 };
 
 module.exports.userIdValidation = {
