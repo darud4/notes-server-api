@@ -1,8 +1,13 @@
 const Note = require('../models/notes');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
+const NotAuthorized = require('../errors/NotAuthorized');
+
 const {
   ERRMSG_BAD_REQUEST,
+  ERRMSG_SELECT_NOTE_NOT_YOURS,
+  ERRMSG_UPDATE_NOTE_NOT_YOURS,
+  ERRMSG_DELETE_NOTE_NOT_YOURS,
 } = require('../utils/errorTexts');
 
 function handleNoteError(error, next) {
@@ -28,19 +33,29 @@ module.exports.getAllNotes = (req, res, next) => {
     .catch((error) => handleNoteError(error, next));
 };
 
-module.exports.updateProfile = (req, res, next) => {
-  const { id } = req.user;
-  const { name, password } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => User.update(
-      { name, password: hash },
-      { where: { id } },
-    ))
+module.exports.getOneNote = (req, res, next) => {
+  const { id } = req.params;
+  const { uid } = req.body;
+  return Note.findByPk(id)
+    .then((note) => {
+      if (note.uid === +uid)
+        return res.status(200).send(note);
+      throw new NotAuthorized(ERRMSG_SELECT_NOTE_NOT_YOURS);
+    })
+    .catch((error) => handleNoteError(error, next));
+};
+
+module.exports.updateNote = (req, res, next) => {
+  const { title, text, isPinned, id } = req.body;
+  User.update(
+    { title, text, isPinned },
+    { where: { id } },
+  )
     .then((rowsUpdated) => (
       rowsUpdated
-        ? res.status(200).send({ name })
-        : Promise.reject(ERRMSG_USER_CANNOT_BE_UPDATED)))
-    .catch((error) => handleUserError(error, next));
+        ? res.status(200).send({ id })
+        : Promise.reject(ERRMSG_NOTE_CANNOT_BE_UPDATED)))
+    .catch((error) => handleNoteError(error, next));
 };
 
 module.exports.deleteProfile = (req, res, next) => {

@@ -4,12 +4,12 @@ const { updateNoteValidation, deleteNoteValidation, userIdValidation, createNote
 
 const {
   //  updateNote, deleteNote, getOneNote,
-  getAllNotes, createNote,
+  getAllNotes, createNote, getOneNote,
 } = require('../controllers/notes');
 
 router.get('/', celebrate(userIdValidation), getAllNotes);
 router.post('/', celebrate(createNoteValidation), createNote);
-// router.get('/:id', getOneNote);
+router.get('/:id', getOneNote);
 // router.patch('/:id', celebrate(updateNoteValidation), updateNote);
 // router.delete('/:id', celebrate(deleteNoteValidation), deleteNote);
 
