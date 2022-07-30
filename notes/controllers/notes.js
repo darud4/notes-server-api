@@ -46,11 +46,17 @@ module.exports.getOneNote = (req, res, next) => {
 };
 
 module.exports.updateNote = (req, res, next) => {
-  const { title, text, isPinned, id } = req.body;
-  User.update(
-    { title, text, isPinned },
-    { where: { id } },
-  )
+  const { title, text, isPinned, id, uid } = req.body;
+  return Note.findByPk(id)
+    .then((note) => {
+      if (note.uid === +uid) {
+        return User.update(
+          { title, text, isPinned },
+          { where: { id } },
+        );
+      }
+      throw new NotAuthorized(ERRMSG_UPDATE_NOTE_NOT_YOURS);
+    })
     .then((rowsUpdated) => (
       rowsUpdated
         ? res.status(200).send({ id })
