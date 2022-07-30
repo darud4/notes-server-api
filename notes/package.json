@@ -25,7 +25,6 @@
     "express-winston": "^4.2.0",
     "pg": "^8.7.3",
     "sequelize": "^6.21.3",
-    "validator": "^13.7.0",
     "winston": "^3.8.1"
   }
 }
