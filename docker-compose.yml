@@ -1,24 +1,33 @@
 version: "3.7"
 services:
-  app:
+  users:
     image: node:12-alpine
     command: sh -c "yarn install && yarn run dev"
     ports:
       - 3000:3000
     working_dir: /app
     volumes:
-      - ./:/app
+      - ./users/:/app
     environment:
       PG_HOST: "auth-db"
       PG_USER: "auth-api"
-      PG_PASSWORD: "secret4api"
+      PG_PASSWORD: "secret4authapi"
       PG_DB: "users"
-auth-db:
-  image: postgres:13.3
-  environment:
-    POSTGRES_DB: "users"
-    POSTGRES_USER: "auth-api"
-    POSTGRES_PASSWORD: "secret4api"
-    PGDATA: "/var/lib/postgresql/data/pgdata"
-  volumes:
-    - .:/var/lib/postgresql/data
+  auth-db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "users"
+      POSTGRES_USER: "auth-api"
+      POSTGRES_PASSWORD: "secret4authapi"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./auth-db:/var/lib/postgresql/data
+  notes-db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "notes"
+      POSTGRES_USER: "notes-api"
+      POSTGRES_PASSWORD: "secret4notesapi"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./notes-db:/var/lib/postgresql/data

@@ -27,10 +27,8 @@ module.exports.createUser = (req, res, next) => {
       name, password: hash, email,
     }))
     .then((user) => res.status(200).send({
-      data: {
-        name: user.name,
-        email: user.email,
-      },
+      name: user.name,
+      email: user.email,
     }))
     .catch((error) => handleUserError(error, next));
 };
@@ -85,5 +83,5 @@ module.exports.deleteProfile = (req, res, next) => {
       rowsDeleted
         ? res.status(200).send({ email })
         : Promise.reject(ERRMSG_USER_CANNOT_BE_DELETED)))
-    .catch(next);
+    .catch((error) => handleUserError(error, next));
 };
