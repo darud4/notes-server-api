@@ -1,6 +1,7 @@
 module.exports.ERRMSG_BAD_REQUEST = 'Переданы неверные данные';
 
 module.exports.ERRMSG_PAGE_NOT_FOUND = 'Запрошенной страницы не существует';
+module.exports.ERRMSG_NOTE_NOT_FOUND = 'Не найдена заметка с таким id';
 
 module.exports.ERRMSG_SELECT_NOTE_NOT_YOURS = 'Нельзя просмотреть чужую заметку';
 

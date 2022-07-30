@@ -10,6 +10,7 @@ const {
   ERRMSG_DELETE_NOTE_NOT_YOURS,
   ERRMSG_NOTE_CANNOT_BE_UPDATED,
   ERRMSG_NOTE_CANNOT_BE_DELETED,
+  ERRMSG_NOTE_NOT_FOUND,
 } = require('../utils/errorTexts');
 
 function handleNoteError(error, next) {
@@ -40,7 +41,8 @@ module.exports.getOneNote = (req, res, next) => {
   const { uid } = req.body;
   return Note.findByPk(id)
     .then((note) => {
-      if (note.uid === +uid)
+      if (!note) throw new NotFound(ERRMSG_NOTE_NOT_FOUND);
+      else if (note.uid === +uid)
         return res.status(200).send(note);
       throw new NotAuthorized(ERRMSG_SELECT_NOTE_NOT_YOURS);
     })

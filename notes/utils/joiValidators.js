@@ -21,6 +21,15 @@ module.exports.updateNoteValidation = {
   })
 };
 
+module.exports.NoteValidation = {
+  body: Joi.object().keys({
+    uid: Joi.number().required(),
+  }),
+  params: Joi.object().keys({
+    id: Joi.number().required(),
+  })
+};
+
 module.exports.userIdValidation = {
   body: Joi.object().keys({
     uid: Joi.number().required(),
