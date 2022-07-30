@@ -13,6 +13,17 @@ services:
       PG_USER: "auth-api"
       PG_PASSWORD: "secret4authapi"
       PG_DB: "users"
+  notes:
+    image: node:12-alpine
+    command: sh -c "yarn install && yarn run dev"
+    working_dir: /app
+    volumes:
+      - ./notes/:/app
+    environment:
+      PG_HOST: "notes-db"
+      PG_USER: "notes-api"
+      PG_PASSWORD: "secret4notesapi"
+      PG_DB: "notes"
   auth-db:
     image: postgres:13.3
     environment:
