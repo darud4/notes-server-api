@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate } = require('celebrate');
-const { updateNoteValidation, NoteValidation, userIdValidation, createNoteValidation } = require('../utils/joiValidators');
+const { updateNoteValidation, noteValidation, userIdValidation, createNoteValidation } = require('../utils/joiValidators');
 
 const {
   updateNote,
@@ -8,10 +8,10 @@ const {
   getAllNotes, createNote, getOneNote,
 } = require('../controllers/notes');
 
-router.get('/', celebrate(userIdValidation), getAllNotes);
-router.post('/', celebrate(createNoteValidation), createNote);
-router.get('/:id', celebrate(NoteValidation), getOneNote);
-router.patch('/:id', celebrate(updateNoteValidation), updateNote);
-router.delete('/:id', celebrate(NoteValidation), deleteNote);
+router.get('/:uid', celebrate(userIdValidation), getAllNotes);
+router.post('/:uid', celebrate(createNoteValidation), createNote);
+router.get('/:uid/:id', celebrate(noteValidation), getOneNote);
+router.patch('/:uid/:id', celebrate(updateNoteValidation), updateNote);
+router.delete('/:uid/:id', celebrate(noteValidation), deleteNote);
 
 module.exports = router;

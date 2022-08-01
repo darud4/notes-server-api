@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { celebrate } = require('celebrate');
 const usersRouter = require('./users');
+const notesRouter = require('./notes');
 // const moviesRouter = require('./movies');
 const NotFound = require('../errors/NotFound');
 const { loginValidation, registerValidation } = require('../utils/joiValidators');
@@ -10,8 +11,9 @@ const { ERRMSG_PAGE_NOT_FOUND } = require('../utils/errorTexts');
 
 router.post('/signin', celebrate(loginValidation), login);
 router.post('/signup', celebrate(registerValidation), createUser);
-// router.use(checkToken);
-router.use('/users', checkToken, usersRouter);
+router.use(checkToken);
+router.use('/users', usersRouter);
+router.use('/notes', notesRouter);
 
 router.use((req, res, next) => next(new NotFound(ERRMSG_PAGE_NOT_FOUND)));
 

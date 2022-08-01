@@ -28,7 +28,7 @@ module.exports.createNote = (req, res, next) => {
 };
 
 module.exports.getAllNotes = (req, res, next) => {
-  const { uid } = req.body;
+  const { uid } = req.params;
   return Note.findAll({ where: { uid } })
     .then((notes) => {
       return res.status(200).send(notes);
@@ -37,8 +37,8 @@ module.exports.getAllNotes = (req, res, next) => {
 };
 
 module.exports.getOneNote = (req, res, next) => {
-  const { id } = req.params;
-  const { uid } = req.body;
+  const { id, uid } = req.params;
+  console.log('req.user=', req.user);
   return Note.findByPk(id)
     .then((note) => {
       if (!note) throw new NotFound(ERRMSG_NOTE_NOT_FOUND);
@@ -50,8 +50,8 @@ module.exports.getOneNote = (req, res, next) => {
 };
 
 module.exports.updateNote = (req, res, next) => {
-  const { title, text, isPinned, uid } = req.body;
-  const { id } = req.params;
+  const { title, text, isPinned } = req.body;
+  const { id, uid } = req.params;
   return Note.findByPk(id)
     .then((note) => {
       if (!note) throw new NotFound(ERRMSG_NOTE_NOT_FOUND);
@@ -71,8 +71,7 @@ module.exports.updateNote = (req, res, next) => {
 };
 
 module.exports.deleteNote = (req, res, next) => {
-  const { id } = req.params;
-  const { uid } = req.body;
+  const { id, uid } = req.params;
   return Note.findByPk(id)
     .then((note) => {
       if (!note) throw new NotFound(ERRMSG_NOTE_NOT_FOUND);

@@ -5,33 +5,33 @@ module.exports.createNoteValidation = {
     title: Joi.string().max(40),
     text: Joi.string().required(),
     isPinned: Joi.boolean(),
-    uid: Joi.number().required(),
   }),
+  params: Joi.object().keys({
+    uid: Joi.number().required(),
+  })
 };
 
 module.exports.updateNoteValidation = {
   body: Joi.object().keys({
     title: Joi.string().max(40),
     text: Joi.string().required(),
-    uid: Joi.number().required(),
     isPinned: Joi.boolean(),
   }),
   params: Joi.object().keys({
     id: Joi.number().required(),
-  })
-};
-
-module.exports.NoteValidation = {
-  body: Joi.object().keys({
     uid: Joi.number().required(),
-  }),
-  params: Joi.object().keys({
-    id: Joi.number().required(),
   })
 };
 
 module.exports.userIdValidation = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
+    uid: Joi.number().required(),
+  }),
+};
+
+module.exports.noteValidation = {
+  params: Joi.object().keys({
+    id: Joi.number().required(),
     uid: Joi.number().required(),
   }),
 };
