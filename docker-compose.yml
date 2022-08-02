@@ -1,5 +1,19 @@
 version: "3.7"
 services:
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+  kafka:
+    image: "bitnami/kafka:latest"
+    environment:
+      KAFKA_BROKER_ID: "1"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://127.0.0.1:9092"
+      KAFKA_CFG_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+    depends_on:
+      - zookeeper
   users:
     image: node:12-alpine
     command: sh -c "yarn install && yarn run dev"
@@ -13,6 +27,8 @@ services:
       PG_USER: "auth-api"
       PG_PASSWORD: "secret4authapi"
       PG_DB: "users"
+    depends_on:
+      - auth-db
   notes:
     image: node:12-alpine
     command: sh -c "yarn install && yarn run dev"
@@ -24,6 +40,8 @@ services:
       PG_USER: "notes-api"
       PG_PASSWORD: "secret4notesapi"
       PG_DB: "notes"
+    depends_on:
+      - notes-db
   auth-db:
     image: postgres:13.3
     environment:
