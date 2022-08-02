@@ -18,6 +18,10 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  isEmailSent: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 User.findUserByCredentials = function findUserByCredentials(email, password) {
