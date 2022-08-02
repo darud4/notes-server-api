@@ -19,7 +19,9 @@ function handleNoteError(error, next) {
 }
 
 module.exports.createNote = (req, res, next) => {
-  const { uid, title, text, isPinned } = req.body;
+  const { uid } = req.params;
+  const { title, text, isPinned } = req.body;
+  console.log(uid, title, text, isPinned);
   return Note.create({ uid, title, text, isPinned })
     .then((note) => {
       return res.status(200).send(note);
@@ -29,6 +31,7 @@ module.exports.createNote = (req, res, next) => {
 
 module.exports.getAllNotes = (req, res, next) => {
   const { uid } = req.params;
+  console.log('getAllNotes', uid);
   return Note.findAll({ where: { uid } })
     .then((notes) => {
       return res.status(200).send(notes);

@@ -72,6 +72,8 @@ module.exports.updateProfile = (req, res, next) => {
 };
 
 module.exports.deleteProfile = (req, res, next) => {
+  // TODO - удалять все заметки пользователя при удалении профиля
+
   const { id } = req.user;
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
