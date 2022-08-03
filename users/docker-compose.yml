@@ -1,0 +1,19 @@
+version: "3.7"
+networks:
+  default:
+    name: notes-app-network
+    external: true
+services:
+  users:
+    image: node:12-alpine
+    command: sh -c "yarn install && yarn run dev"
+    ports:
+      - 3001:3000
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      PG_HOST: "auth-db"
+      PG_USER: "auth-api"
+      PG_PASSWORD: "secret4authapi"
+      PG_DB: "users"

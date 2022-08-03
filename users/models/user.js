@@ -34,6 +34,6 @@ User.findUserByCredentials = function findUserByCredentials(email, password) {
     });
 };
 
-sequelize.sync();
+sequelize.sync({alter: true});
 
 module.exports = User;
