@@ -4,10 +4,6 @@ networks:
     name: notes-app-network
     external: true
 services:
-  gateway: 
-    image: "notes-app-gateway"
-    ports:
-      - 3000:80
   zookeeper:
     image: "bitnami/zookeeper:latest"
     environment:
@@ -23,19 +19,6 @@ services:
     depends_on:
       - zookeeper
   users:
-    image: node:12-alpine
-    command: sh -c "yarn install && yarn run dev"
-    working_dir: /app
-    volumes:
-      - ./users/:/app
-    environment:
-      PG_HOST: "auth-db"
-      PG_USER: "auth-api"
-      PG_PASSWORD: "secret4authapi"
-      PG_DB: "users"
-    depends_on:
-      - auth-db
-  users1:
     image: node:12-alpine
     command: sh -c "yarn install && yarn run dev"
     working_dir: /app
