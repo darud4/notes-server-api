@@ -1,0 +1,38 @@
+{
+  "name": "notes-api",
+  "version": "1.0.0",
+  "description": "User Notes Api",
+  "main": "app.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "lint-fix": "npx eslint . --fix",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Pavel Bezrukov",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "celebrate": "^15.0.1",
+    "cors": "^2.8.5",
+    "cross-fetch": "^3.1.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-rate-limit": "^6.5.1",
+    "express-winston": "^4.2.0",
+    "helmet": "^5.1.1",
+    "http-proxy-middleware": "^2.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "node-service-discovery": "^1.0.2",
+    "pg": "^8.7.3",
+    "sequelize": "^6.21.3",
+    "winston": "^3.8.1"
+  }
+}
